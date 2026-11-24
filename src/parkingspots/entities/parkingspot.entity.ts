@@ -11,11 +11,7 @@ import { User } from '../../users/entities/user.entity';
 import { Reservation } from '../../reservations/entities/reservation.entity';
 
 
-export enum Charger_type {
-  STANDARD = 'STANDARD',
-  FAST = 'FAST',
-  ULTRA_FAST = 'ULTRA_FAST',
-}
+
 
 @Entity('parkingspots')
 export class Parkingspot {
@@ -27,8 +23,6 @@ export class Parkingspot {
   code: string;
 
 
-  @Column({ type: 'varchar', length: 20, default: Charger_type.STANDARD })
-  status: Charger_type;
 
   @Column({ type: 'uuid' })
   id_supervisor: string;
