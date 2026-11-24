@@ -14,12 +14,31 @@ export class Parkingspot {
     @PrimaryGeneratedColumn('uuid')
     id:string;
     
-    @Column({ unique: true })
+    @Column({ unique: true,  nullable: false})
     code: string;
 
 
-      @Column({ type: 'varchar', length: 20, default: CharacterStatus.ACTIVE })
+    @Column({ type: 'varchar', length: 20, default: Charger_type.STANDARD })
   status: Charger_type;
+
+    @Column({ type: 'uuid' })
+    id_supervisor: string;
+
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'id_supervisor' })
+    supervisor: User;
+
+
+    @CreateDateColumn()
+    created_at: Date;
+
+
+
+
+
+
+
 
     
 
