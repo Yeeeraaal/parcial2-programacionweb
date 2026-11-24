@@ -44,16 +44,12 @@ export class ParkingspotsService {
     }
 
     async findAll() {
-        return await this.spotRepository.find({
-            relations: ['supervisor'],
-        });
+        return await this.spotRepository.find({ });
     }
 
     async findOne(id: string) {
         const spot = await this.spotRepository.findOne({
-            where: { id },
-            relations: ['supervisor', 'reservations'],
-        });
+            where: { id } });
         if (!spot) {
             throw new NotFoundException('Espacio de parqueo no encontrado');
         }
@@ -71,4 +67,25 @@ export class ParkingspotsService {
         await this.spotRepository.remove(spot);
         return { message: 'Espacio de parqueo eliminado correctamente' };
     }
+
+
+  //     async create(createTeamDto: CreateTeamDto): Promise<Team> {
+  //   const existing = await this.teamRepository.findOne({
+  //     where: { name: createTeamDto.name },
+  //   });
+  //   if (existing) { cambia para spots
+
+  //     throw new ConflictException(`Ya existe un equipo con el nombre '${createTeamDto.name}'`);
+  //   }
+
+  //   const { characterIds, ...teamData } = createTeamDto;
+  //   const team = this.teamRepository.create(teamData);
+  //   const savedTeam = await this.teamRepository.save(team);
+
+  //   if (characterIds && characterIds.length > 0) {
+  //     await this.assignCharactersToTeam(savedTeam.id, characterIds);
+  //   }
+
+  //   return this.findOne(savedTeam.id);
+  // }
 }
