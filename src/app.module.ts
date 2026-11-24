@@ -11,6 +11,8 @@ import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { RolePolicy } from './roles/policies/role.policy';
 import { UserPolicy } from './users/policies/user.policy';
+import { ReservationsModule } from './reservations/reservations.module';
+import { ParkingspotsModule } from './parkingspots/parkingspots.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { UserPolicy } from './users/policies/user.policy';
     UsersModule,
     RolesModule,
     AuthModule,
+    ReservationsModule,
+    ParkingspotsModule,
   ],
   providers: [CustomJwtBearerProvider],
 })
