@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany } 
 import { User } from '../../users/entities/user.entity';
 
 
-export enum ReservationStatus {
+export enum Charger_type {  
   STANDARD = 'STANDARD',
   FAST = 'FAST',
   ULTRA_FAST = 'ULTRA_FAST',
