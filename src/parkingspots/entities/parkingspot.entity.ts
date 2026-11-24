@@ -1,5 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+    ManyToOne,
+    OneToMany,
+    JoinColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Reservation } from '../../reservations/entities/reservation.entity';
 
 
 export enum Charger_type {  
