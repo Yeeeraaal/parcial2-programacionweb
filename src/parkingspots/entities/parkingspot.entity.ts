@@ -13,23 +13,16 @@ export class Parkingspot {
 
     @PrimaryGeneratedColumn('uuid')
     id:string;
+    
+    @Column({ unique: true })
+    code: string;
 
-    @Column({ type: 'varchar', unique: true, nullable: false })
-    id_user:string;
 
-    @Column({type: 'varchar', nullable: false})
-    id_spot:string;
+      @Column({ type: 'varchar', length: 20, default: CharacterStatus.ACTIVE })
+  status: Charger_type;
 
-    @Column({ type: 'date', nullable: false })
-    date:Date;
+    
 
-    @Column({ type: 'varchar', nullable: false })
-    vehicle_plate:string;
-
-    @Column({ type: 'varchar', nullable: false })
-    vehicle_max_charge:string;
-
-    @
 
 
 
