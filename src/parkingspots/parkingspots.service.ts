@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
-import { CreateParkingspotDto } from './dto/create-parkingspot.dto';
+import { Injectable, NotFoundException,BadRequestException, } from '@nestjs/common';
+import { CreateParkingSpotDto } from './dto/create-parkingspot.dto';
 import { UpdateParkingspotDto } from './dto/update-parkingspot.dto';
+import { User } from '../users/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Parkingspot } from './entities/parkingspot.entity';
+
 
 @Injectable()
 export class ParkingspotsService {
-  create(createParkingspotDto: CreateParkingspotDto) {
-    return 'This action adds a new parkingspot';
-  }
 
-  findAll() {
-    return `This action returns all parkingspots`;
-  }
+  constructor(
+        @InjectRepository(Parkingspot)
+        private readonly spotRepository: Repository<Parkingspot>,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
+    ) { }
 
-  findOne(id: number) {
-    return `This action returns a #${id} parkingspot`;
-  }
+      async create(dto: CreateParkingSpotDto, currentUserId: string) {
+        const supervisorId = dto.id_supervisor || currentUserId;
 
-  update(id: number, updateParkingspotDto: UpdateParkingspotDto) {
-    return `This action updates a #${id} parkingspot`;
-  }
+        const supervisor = await this.userRepository.findOne({
+            where: { id: supervisorId },
+        });
+        if (!supervisor) {
+            throw new NotFoundException('Supervisor no encontrado');
+        }
 
-  remove(id: number) {
-    return `This action removes a #${id} parkingspot`;
-  }
+        const existing = await this.spotRepository.findOne({
+            where: { code: dto.code },
+        });
+        if (existing) {
+            throw new BadRequestException('Ya existe un espacio con ese código');
+        }
+
+        const spot = this.spotRepository.create({
+            code: dto.code,
+            charger_type: dto.charger_type,
+            id_supervisor: supervisorId,
+        });
+
+        return await this.spotRepository.save(spot);
+    }
+
+    async findAll() {
+        return await this.spotRepository.find({
+            relations: ['supervisor'],
+        });
+    }
+
+    async findOne(id: string) {
+        const spot = await this.spotRepository.findOne({
+            where: { id },
+            relations: ['supervisor', 'reservations'],
+        });
+        if (!spot) {
+            throw new NotFoundException('Espacio de parqueo no encontrado');
+        }
+        return spot;
+    }
+
+    async update(id: string, dto: UpdateParkingSpotDto) {
+        const spot = await this.findOne(id);
+        Object.assign(spot, dto);
+        return await this.spotRepository.save(spot);
+    }
+
+    async remove(id: string) {
+        const spot = await this.findOne(id);
+        await this.spotRepository.remove(spot);
+        return { message: 'Espacio de parqueo eliminado correctamente' };
+    }
 }

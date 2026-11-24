@@ -22,8 +22,6 @@ export class Parkingspot {
   @Column({ unique: true, nullable: false })
   code: string;
 
-
-
   @Column({ type: 'uuid' })
   id_supervisor: string;
 
