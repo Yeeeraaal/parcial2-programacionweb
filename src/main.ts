@@ -10,7 +10,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
       transform: true,
     }),
-  ); //[cite: 5]
+  ); 
   await app.listen(3000);
 }
 bootstrap();
